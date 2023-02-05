@@ -2,7 +2,7 @@
 
 namespace Ivo\ProtectPage\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Input;
 
