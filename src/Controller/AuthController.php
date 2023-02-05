@@ -5,6 +5,7 @@ namespace Ivo\ProtectPage\Controller;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Input;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class AuthController extends Controller
 {
@@ -16,7 +17,7 @@ class AuthController extends Controller
         $this->framework = $framework;
     }
 
-    public function __invoke(FilterResponseEvent $event)
+    public function __invoke(ResponseEvent $event)
     {
         $this->framework->initialize();
         $request = $event->getRequest();
@@ -54,7 +55,6 @@ class AuthController extends Controller
     {
         $user = Input::post('username');
         $pw = Input::post('password');
-        $this->checkAuth($objPage);
         $hash = \md5($objPage->id . $objPage->auth_pw . strtotime('today'));
         if (($user == $objPage->auth_user && \password_verify($pw, $objPage->auth_pw)) || $_COOKIE[$hash]) {
             \setcookie($hash, 1, time() + 86400);
