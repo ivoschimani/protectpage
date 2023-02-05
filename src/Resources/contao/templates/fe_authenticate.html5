@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="<?= $this->language ?>">
+
+<head>
+
+    <?php $this->block('head'); ?>
+    <meta charset="<?= $this->charset ?>">
+    <title>Login erforderlich für - <?= $this->title ?></title>
+    <base href="<?= $this->base ?>">
+
+    <?php $this->block('meta'); ?>
+    <meta name=”robots” content=”noindex,nofollow”>
+    <meta name="description" content="Login erforderlich für - <?= $this->title ?>">
+    <meta name="generator" content="Contao Open Source CMS">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no">
+    <?php $this->endblock(); ?>
+    <?php $this->endblock(); ?>
+    <link rel="stylesheet" href="/bundles/protectpage/style.css">
+    <?php if ($this->logo) : ?>
+        <style>
+            .logo {
+                background-image: url("<?= $this->logo ?>");
+                background-size: contain;
+                height: 150px;
+            }
+        </style>
+    <?php endif; ?>
+</head>
+
+<body id="top" class="<?= $this->class ? ' ' . $this->class : '' ?>" itemtype="http://schema.org/WebPage">
+
+    <div id="wrapper">
+
+        <div id="container">
+            <div class="authcontainer">
+                <?php if ($this->logo) : ?>
+                    <span class="logo" title=""></span>
+                <?php else : ?>
+                    <a target="_blank" href="https://www.digiwerft.de" class="logo" title="Powered by Digiwerft">Powered by
+                        Digiwerft</a>
+                <?php endif; ?>
+                <p>Login erforderlich für - /<?= $this->alias ?>.html</p>
+                <?php if ($this->error) : ?>
+                    <p class="error">Die Zugangsdaten waren falsch!</p>
+                <?php endif; ?>
+                <form action="" method="post">
+                    <input type="hidden" name="REQUEST_TOKEN" value="{{REQUEST_TOKEN}}">
+                    <div class="username">
+                        <label for="username">Benutzername</label>
+                        <input type="text" id="username" name="username">
+                    </div>
+                    <div class="password">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                    <div class="submit">
+                        <button type="submit">anmelden</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

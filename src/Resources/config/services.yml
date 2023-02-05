@@ -1,0 +1,8 @@
+services:
+  ivo.protectpage.controller.authcontroller:
+    class: Ivo\ProtectPage\Controller\AuthController
+    arguments: 
+      - "@contao.framework"
+    public: true
+    tags:
+      - { name: kernel.event_listener, event: kernel.response }
