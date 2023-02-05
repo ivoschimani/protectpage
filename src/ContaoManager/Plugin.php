@@ -2,8 +2,8 @@
 
 namespace Ivo\ProtectPage\ContaoManager;
 
-use Contao\ManagerPlugin\BundlePluginInterface;
-use Contao\ManagerPlugin\Config\BundleConfig;
+use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
+use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 
 class Plugin implements BundlePluginInterface
