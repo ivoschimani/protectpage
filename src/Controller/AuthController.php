@@ -27,7 +27,7 @@ class AuthController extends Controller
         }
         if ($objPage = $this->findProtectedPage($objPage)) {
             if (($validate = $this->validate($objPage)) !== true) {
-                $objTemplate = new \FrontendTemplate('fe_authentication');
+                $objTemplate = new \FrontendTemplate('fe_authenticate');
                 $objTemplate->title = $objPage->title;
                 $objTemplate->alias = $objPage->alias;
                 if ($objPage->auth_logo) {
