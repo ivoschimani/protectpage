@@ -2,9 +2,14 @@
 
 namespace Ivo\ProtectPage\Controller;
 
+use Contao\Config;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\Environment;
+use Contao\FilesModel;
+use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\PageModel;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class AuthController extends Controller
@@ -28,11 +33,11 @@ class AuthController extends Controller
         }
         if ($objPage = $this->findProtectedPage($objPage)) {
             if (($validate = $this->validate($objPage)) !== true) {
-                $objTemplate = new \FrontendTemplate('fe_authenticate');
+                $objTemplate = new FrontendTemplate('fe_authenticate');
                 $objTemplate->title = $objPage->title;
                 $objTemplate->alias = $objPage->alias;
                 if ($objPage->auth_logo) {
-                    $objFile = \FilesModel::findByUuid($objPage->auth_logo);
+                    $objFile = FilesModel::findByUuid($objPage->auth_logo);
                     if ($objFile !== null) {
                         $objTemplate->logo = $objFile->path;
                     }
@@ -71,7 +76,7 @@ class AuthController extends Controller
         if ($objPage->authRequired) {
             return $objPage;
         } elseif ($objPage->pid != 0) {
-            $objParent = \PageModel::findByPk($objPage->pid);
+            $objParent = PageModel::findByPk($objPage->pid);
             return $this->findProtectedPage($objParent);
         } else {
             return false;
