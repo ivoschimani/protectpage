@@ -31,7 +31,7 @@ class AuthController extends Controller
         if (!$objPage) {
             return;
         }
-        if ($objPage = $this->findProtectedPage($objPage)) {
+        if ($objPage = $this->findProtectedPage($objPage) && (strpos(Environment::get('requestUri'), "/preview.php/") !== 0)) {
             if (($validate = $this->validate($objPage)) !== true) {
                 $objTemplate = new FrontendTemplate('fe_authenticate');
                 $objTemplate->title = $objPage->title;
