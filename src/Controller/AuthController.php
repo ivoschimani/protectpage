@@ -27,23 +27,25 @@ class AuthController extends Controller
         $this->framework->initialize();
         $request = $event->getRequest();
         $response = $event->getResponse();
-        $objPage = $request->get('pageModel');
-        if (!$objPage) {
+        $objRequestedPage = $request->get('pageModel');
+        if (!$objRequestedPage) {
             return;
         }
-        if ($objPage = $this->findProtectedPage($objPage) && (strpos(Environment::get('requestUri'), "/preview.php/") !== 0)) {
-            if (($validate = $this->validate($objPage)) !== true) {
+        $objPage = $this->findProtectedPage($objRequestedPage);
+        if ($objPage && (strpos(Environment::get('requestUri'), "/preview.php/") !== 0)) {
+            $validate = $this->validate($objPage);
+            if ($validate !== true) {
                 $objTemplate = new FrontendTemplate('fe_authenticate');
-                $objTemplate->title = $objPage->title;
-                $objTemplate->alias = $objPage->alias;
+                $objTemplate->title = $objRequestedPage->title;
+                $objTemplate->alias = $objRequestedPage->alias;
                 if ($objPage->auth_logo) {
                     $objFile = FilesModel::findByUuid($objPage->auth_logo);
                     if ($objFile !== null) {
                         $objTemplate->logo = $objFile->path;
                     }
                 }
-                $objTemplate->description = $objPage->description;
-                $objTemplate->robots = $objPage->robots;
+                $objTemplate->description = $objRequestedPage->description;
+                $objTemplate->robots = $objRequestedPage->robots;
                 $objTemplate->charset = Config::get('characterSet');
                 $objTemplate->base = Environment::get('base');
                 if ($validate == 'wrong_data') {
@@ -73,7 +75,7 @@ class AuthController extends Controller
 
     protected function findProtectedPage($objPage)
     {
-        if ($objPage->authRequired) {
+        if ($objPage->authRequired == "1") {
             return $objPage;
         } elseif ($objPage->pid != 0) {
             $objParent = PageModel::findByPk($objPage->pid);
