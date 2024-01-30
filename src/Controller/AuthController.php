@@ -10,6 +10,7 @@ use Contao\FilesModel;
 use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\PageModel;
+use Contao\System;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class AuthController extends Controller
@@ -51,7 +52,10 @@ class AuthController extends Controller
                 if ($validate == 'wrong_data') {
                     $objTemplate->error = true;
                 }
-                $response->setContent(FrontendTemplate::replaceDynamicScriptTags(FrontendTemplate::replaceInsertTags($objTemplate->parse())));
+                $parser =
+                    System::getContainer()->get('contao.insert_tag.parser');
+                $strBuffer = FrontendTemplate::replaceDynamicScriptTags($parser->replace((string) $objTemplate->parse()));
+                $response->setContent($strBuffer);
                 return $response->send();
                 exit;
             }
@@ -63,7 +67,7 @@ class AuthController extends Controller
         $user = Input::post('username');
         $pw = Input::post('password');
         $hash = \md5($objPage->id . $objPage->auth_pw . strtotime('today'));
-        if (($user == $objPage->auth_user && \password_verify($pw, $objPage->auth_pw)) || $_COOKIE[$hash]) {
+        if (($user == $objPage->auth_user && \password_verify($pw, $objPage->auth_pw)) || ($_COOKIE[$hash] ?? null)) {
             \setcookie($hash, 1, time() + 86400);
             return true;
         } elseif (Input::post('username') != '' && Input::post('passwort') != '') {
