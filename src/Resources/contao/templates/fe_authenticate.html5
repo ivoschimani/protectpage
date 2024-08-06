@@ -1,3 +1,9 @@
+<?php
+
+use Contao\Input;
+use Contao\System;
+
+?>
 <!DOCTYPE html>
 <html lang="<?= $this->language ?>">
 
@@ -17,13 +23,13 @@
     <?php $this->endblock(); ?>
     <link rel="stylesheet" href="/bundles/protectpage/style.css">
     <?php if ($this->logo) : ?>
-        <style>
-            .logo {
-                background-image: url("<?= $this->logo ?>");
-                background-size: contain;
-                height: 150px;
-            }
-        </style>
+    <style>
+    .logo {
+        background-image: url("<?= $this->logo ?>");
+        background-size: contain;
+        height: 150px;
+    }
+    </style>
     <?php endif; ?>
 </head>
 
@@ -34,17 +40,17 @@
         <div id="container">
             <div class="authcontainer">
                 <?php if ($this->logo) : ?>
-                    <span class="logo" title=""></span>
+                <span class="logo" title=""></span>
                 <?php else : ?>
-                    <a target="_blank" href="https://www.digiwerft.de" class="logo" title="Powered by Digiwerft">Powered by
-                        Digiwerft</a>
+                <a target="_blank" href="https://www.digiwerft.de" class="logo" title="Powered by Digiwerft">Powered by
+                    Digiwerft</a>
                 <?php endif; ?>
                 <p>Login erforderlich für - /<?= $this->alias ?>.html</p>
                 <?php if ($this->error) : ?>
-                    <p class="error">Die Zugangsdaten waren falsch!</p>
+                <p class="error">Die Zugangsdaten waren falsch!</p>
                 <?php endif; ?>
-                <form action="" method="post">
-                    <input type="hidden" name="REQUEST_TOKEN" value="{{REQUEST_TOKEN}}">
+                <form action="" method="get">
+                    <input type="hidden" name="protect_page_auth" value="1">
                     <div class="username">
                         <label for="username">Benutzername</label>
                         <input type="text" id="username" name="username">
@@ -61,7 +67,6 @@
         </div>
 
     </div>
-
 </body>
 
 </html>

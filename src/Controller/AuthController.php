@@ -11,6 +11,7 @@ use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class AuthController extends Controller
@@ -58,19 +59,24 @@ class AuthController extends Controller
                 $response->setContent($strBuffer);
                 return $response->send();
                 exit;
+            } else {
+                if (Input::get('protect_page_auth') == 1) {
+                    $response = new RedirectResponse($request->getPathInfo(), 302);
+                    return $response->send();
+                }
             }
         }
     }
 
     protected function validate($objPage)
     {
-        $user = Input::post('username');
-        $pw = Input::post('password');
+        $user = Input::get('username');
+        $pw = Input::get('password');
         $hash = \md5($objPage->id . $objPage->auth_pw . strtotime('today'));
         if (($user == $objPage->auth_user && \password_verify($pw, $objPage->auth_pw)) || ($_COOKIE[$hash] ?? null)) {
             \setcookie($hash, 1, time() + 86400);
             return true;
-        } elseif (Input::post('username') != '' && Input::post('passwort') != '') {
+        } elseif (Input::get('username') != '' && Input::get('passwort') != '') {
             return 'wrong_data';
         } else {
             return false;
