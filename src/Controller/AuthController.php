@@ -76,7 +76,7 @@ class AuthController extends Controller
         if (($user == $objPage->auth_user && \password_verify($pw, $objPage->auth_pw)) || ($_COOKIE[$hash] ?? null)) {
             \setcookie($hash, 1, time() + 86400);
             return true;
-        } elseif (Input::get('username') != '' && Input::get('passwort') != '') {
+        } elseif (Input::get('username') != '' && Input::get('password') != '') {
             return 'wrong_data';
         } else {
             return false;
