@@ -57,12 +57,12 @@ class AuthController extends Controller
                     System::getContainer()->get('contao.insert_tag.parser');
                 $strBuffer = FrontendTemplate::replaceDynamicScriptTags($parser->replace((string) $objTemplate->parse()));
                 $response->setContent($strBuffer);
-                return $response->send();
-                exit;
+                $event->setResponse($response);
+                return;
             } else {
                 if (Input::get('protect_page_auth') == 1) {
-                    $response = new RedirectResponse($request->getPathInfo(), 302);
-                    return $response->send();
+                    $event->setResponse(new RedirectResponse($request->getPathInfo(), 302));
+                    return;
                 }
             }
         }
